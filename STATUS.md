@@ -8,7 +8,6 @@
 - Console script entry point configured: `hetzner-dns`
 
 ## Blockers / Questions
-- **GitHub repo:** Needs to be created under `konstant-ventures` org and code pushed
 - **PyPI:** Not published yet — install only from GitHub
 - **Tests:** No automated tests yet
 
