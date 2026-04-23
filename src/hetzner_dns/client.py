@@ -126,20 +126,43 @@ class HetznerDNSClient:
         """Add or update a DNS record.
 
         If the record already exists, it is replaced with the new value.
+        If it does not exist, a new RRSet is created.
         """
-        payload = {
-            "records": [
-                {
-                    "value": value,
-                    "ttl": ttl,
-                }
-            ]
-        }
-        return self._request(
-            "POST",
-            f"/zones/{zone_id}/rrsets/{name}/{rtype}/actions/update_records",
-            json=payload,
-        )
+        # Check if record exists
+        existing = self.get_record(zone_id, name, rtype)
+
+        if existing:
+            # Update existing record
+            payload = {
+                "records": [
+                    {
+                        "value": value,
+                        "ttl": ttl,
+                    }
+                ]
+            }
+            return self._request(
+                "POST",
+                f"/zones/{zone_id}/rrsets/{name}/{rtype}/actions/update_records",
+                json=payload,
+            )
+        else:
+            # Create new RRSet
+            payload = {
+                "name": name,
+                "type": rtype,
+                "ttl": ttl,
+                "records": [
+                    {
+                        "value": value,
+                    }
+                ],
+            }
+            return self._request(
+                "POST",
+                f"/zones/{zone_id}/rrsets",
+                json=payload,
+            )
 
     def delete_record(self, zone_id: str, name: str, rtype: str) -> None:
         """Delete a DNS record (RRSet) entirely."""
