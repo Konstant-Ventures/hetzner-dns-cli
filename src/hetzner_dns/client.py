@@ -141,13 +141,11 @@ class HetznerDNSClient:
             json=payload,
         )
 
-    def delete_record(self, zone_id: str, name: str, rtype: str) -> dict:
-        """Delete a DNS record by clearing all values."""
-        payload = {"records": []}
-        return self._request(
-            "POST",
-            f"/zones/{zone_id}/rrsets/{name}/{rtype}/actions/update_records",
-            json=payload,
+    def delete_record(self, zone_id: str, name: str, rtype: str) -> None:
+        """Delete a DNS record (RRSet) entirely."""
+        self._request(
+            "DELETE",
+            f"/zones/{zone_id}/rrsets/{name}/{rtype}",
         )
 
     # ------------------------------------------------------------------
