@@ -79,6 +79,12 @@ hetzner-dns add --name hello --type A --value 104.236.76.53
 # Delete a record
 hetzner-dns delete --name hello --type A
 
+# Verify deletion
+hetzner-dns list
+
+# Add it back
+hetzner-dns add --name hello --type A --value 104.236.76.53
+
 # Idempotent ensure (won't touch if already correct — best for automation)
 hetzner-dns ensure --name hello --type A --value 104.236.76.53
 ```
