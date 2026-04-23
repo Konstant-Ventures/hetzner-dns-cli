@@ -1,0 +1,48 @@
+# Git Ignore — hetzner-dns-cli
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Secrets (NEVER commit these)
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+
+# Test coverage
+coverage/
+.coverage
+.pytest_cache/
+
+# Temporary files
+*.tmp
+*.log
+
+# Local development artifacts
+.hetzner-dns/
