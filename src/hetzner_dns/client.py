@@ -104,8 +104,23 @@ class HetznerDNSClient:
 
     def list_records(self, zone_id: str) -> list[dict]:
         """List all record sets (RRSets) in a zone."""
-        data = self._request("GET", f"/zones/{zone_id}/rrsets")
-        return data.get("rrsets", []) if data else []
+        records: list[dict] = []
+        page = 1
+        while True:
+            data = self._request(
+                "GET",
+                f"/zones/{zone_id}/rrsets",
+                params={"page": page, "per_page": 100},
+            )
+            if not data:
+                break
+            records.extend(data.get("rrsets", []))
+            pagination = data.get("meta", {}).get("pagination", {})
+            last_page = int(pagination.get("last_page") or page)
+            if page >= last_page:
+                break
+            page += 1
+        return records
 
     def get_record(self, zone_id: str, name: str, rtype: str) -> dict | None:
         """Get a specific record set by name and type."""
